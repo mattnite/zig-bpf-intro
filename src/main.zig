@@ -25,17 +25,18 @@ comptime {
     assert(bpf.elf.has_section(probe, "socket1"));
 }
 
-fn consume_events(perf_buffer: *BPF.PerfBuffer) void {
+fn consume_events(perf_buffer: *bpf.PerfBuffer) void {
     while (perf_buffer.running.get()) {
         const payload = perf_buffer.get();
 
         switch (payload.event) {
-            .sample => |data| {
+            .sample => |sample| {
                 std.debug.print("cpu: {}, sample: {}\n", .{
                     payload.cpu,
-                    mem.bytesToValue(usize, data[0..8]),
+                    mem.bytesToValue(usize, sample.items[0..8]),
                 });
-                perf_buffer.allocator.free(data);
+
+                sample.deinit();
             },
             .lost => |cnt| {
                 std.debug.print("cpu: {}, lost: {}\n", .{ payload.cpu, cnt });
@@ -63,9 +64,12 @@ pub fn main() anyerror!void {
         .def = BPF.kern.PerfEventArray.init(256, 0).map.def,
     });
 
-    var perf_buffer = try BPF.PerfBuffer.init(&gpa.allocator, perf_event_array, 64);
+    var perf_buffer = try bpf.PerfBuffer.init(&gpa.allocator, perf_event_array, 64);
+
     _ = async perf_buffer.run();
     _ = async consume_events(&perf_buffer);
 
+    // suspends current frame in event loop, which ends up running the program
+    // indefinitely
     suspend;
 }
