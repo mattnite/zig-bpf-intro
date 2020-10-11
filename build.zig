@@ -6,6 +6,11 @@ const Builder = std.build.Builder;
 pub fn build(b: *Builder) void {
     const target = b.standardTargetOptions(.{});
 
+    const bpf = std.build.Pkg{
+        .name = "bpf",
+        .path = "libs/bpf/exports.zig",
+    };
+
     const obj = b.addObject("probe", "src/probe.zig");
     obj.setTarget(std.zig.CrossTarget{
         .cpu_arch = switch ((target.cpu_arch orelse builtin.arch).endian()) {
@@ -15,12 +20,8 @@ pub fn build(b: *Builder) void {
         .os_tag = .freestanding,
     });
     obj.setBuildMode(.ReleaseFast);
+    obj.addPackage(bpf);
     obj.setOutputDir("src");
-
-    const bpf = std.build.Pkg{
-        .name = "bpf",
-        .path = "libs/bpf/exports.zig",
-    };
 
     const mode = b.standardReleaseOptions();
     const main = b.addExecutable("main", "src/main.zig");

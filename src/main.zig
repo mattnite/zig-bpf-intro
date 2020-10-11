@@ -4,7 +4,6 @@ const mem = std.mem;
 
 usingnamespace @import("common.zig");
 
-const BPF = std.os.linux.BPF;
 const os = std.os;
 const assert = std.debug.assert;
 
@@ -59,9 +58,9 @@ pub fn main() anyerror!void {
     const prog = obj.find_prog("socket1") orelse unreachable;
     try os.setsockopt(sock_fd, c.SOL_SOCKET, c.SO_ATTACH_BPF, mem.asBytes(&prog));
 
-    const perf_event_array = try BPF.PerfEventArray.init(BPF.MapInfo{
+    const perf_event_array = try bpf.PerfEventArray.init(bpf.MapInfo{
         .fd = obj.find_map("events") orelse return error.NoEventsMap,
-        .def = BPF.kern.PerfEventArray.init(256, 0).map.def,
+        .def = bpf.kern.PerfEventArray.init(256, 0).map.def,
     });
 
     var perf_buffer = try bpf.PerfBuffer.init(&gpa.allocator, perf_event_array, 64);
