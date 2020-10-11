@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          submodule: recursive 
 
       - name: Install Zig
         run: sudo ./zig-install.sh
