@@ -1,5 +1,7 @@
 # zig-bpf-intro
 
+[![build](https://github.com/mattnite/zig-bpf-intro/workflows/build/badge.svg)](https://github.com/mattnite/zig-bpf-intro/actions)
+
 Reminder! this repo has a git submodule, so remember to clone with
 `--recursive`!
 
