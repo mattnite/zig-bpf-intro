@@ -1,0 +1,17 @@
+name: build
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Zig
+        run: zig-install.sh
+        
+      - name: Compile
+        run: zig build
