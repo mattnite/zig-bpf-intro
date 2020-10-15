@@ -8,8 +8,9 @@ Reminder! this repo has a git submodule, so remember to clone with
 ## If you are new to Zig: Getting Started
 
 If you find yourself here it's likely from my article about using BPF with Zig.
-To quickly install the Zig compiler I've made a script to install `master`. All
-you need to do is:
+To get your hands on the Zig compiler I suggest downloading `master` from
+[here](https://ziglang.org/download/), or there's a script included in this
+repo, all you need to do is run:
 
 ```
 sudo ./zig-install.sh
