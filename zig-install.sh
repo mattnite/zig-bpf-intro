@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 TAR_DST=/tmp/zig.tar.xz
 DST=/tmp/zig
 
@@ -14,7 +16,7 @@ for CMD in jq curl sha256sum; do
     fi
 done
 
-rm $TAR_DST
+rm $TAR_DST -f
 rm $DST -rf
 
 MASTER=$(curl -q https://ziglang.org/download/index.json 2>/dev/null | jq ".master.\"$(uname -m)-$(uname | awk '{ print tolower($0) }')\"")
