@@ -59,6 +59,7 @@ pub fn main() anyerror!void {
     try os.setsockopt(sock_fd, c.SOL_SOCKET, c.SO_ATTACH_BPF, mem.asBytes(&prog));
 
     const perf_event_array = try bpf.PerfEventArray.init(bpf.MapInfo{
+        .name = "",
         .fd = obj.find_map("events") orelse return error.NoEventsMap,
         .def = bpf.kern.PerfEventArray.init(256, 0).map.def,
     });
