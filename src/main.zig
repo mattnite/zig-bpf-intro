@@ -25,7 +25,7 @@ comptime {
 }
 
 fn consume_events(perf_buffer: *bpf.PerfBuffer) void {
-    while (perf_buffer.running.get()) {
+    while (perf_buffer.running.load(.SeqCst)) {
         const payload = perf_buffer.get();
 
         switch (payload.event) {
@@ -67,9 +67,5 @@ pub fn main() anyerror!void {
     var perf_buffer = try bpf.PerfBuffer.init(&gpa.allocator, perf_event_array, 64);
 
     _ = async perf_buffer.run();
-    _ = async consume_events(&perf_buffer);
-
-    // suspends current frame in event loop, which ends up running the program
-    // indefinitely
-    suspend;
+    consume_events(&perf_buffer);
 }
