@@ -11,13 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download zig compiler
+        uses: goto-bus-stop/setup-zig@v1
+        with:
+          version: master
+
       - name: Checkout code
         uses: actions/checkout@v2
         with:
           submodules: recursive 
 
-      - name: Install Zig
-        run: sudo ./zig-install.sh
-        
       - name: Compile
         run: zig build

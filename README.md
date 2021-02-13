@@ -8,18 +8,7 @@ Reminder! this repo has a git submodule, so remember to clone with
 ## If you are new to Zig: Getting Started
 
 If you find yourself here it's likely from my article about using BPF with Zig.
-To get your hands on the Zig compiler I suggest downloading `master` from
-[here](https://ziglang.org/download/), or you can run a script included in this repo:
-
-```
-sudo ./zig-install.sh
-```
-
-and that will put Zig into `/usr/local`. Test by running:
-
-```
-zig version
-```
+To get your hands on the Zig compiler, get the nightly build following [these instructions](https://ziglang.org/learn/getting-started/).
 
 In order to build and run the example program, simply:
 
